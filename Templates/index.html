@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analizador Léxico y Sintáctico</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Analizador Léxico, Sintáctico</h1>
+        <div class="editor">
+            <textarea id="codeInput" rows="10" cols="50"></textarea>
+        </div>
+        <div class="buttons">
+            <button onclick="analyzeLexical()">Analizar Léxico</button>
+            <button onclick="analyzeSyntactic()">Analizar Sintáctico</button>
+        </div>
+        <div class="results">
+            <div>
+                <h2>Analisis Léxico</h2>
+                <pre id="lexicalResult"></pre>
+            </div>
+            <div>
+                <h2>Analisis Sintáctico</h2>
+                <pre id="syntacticResult"></pre>
+            </div>
+        </div>
+    </div>
+    <script>function analyzeLexical() {
+        const code = document.getElementById('codeInput').value;
+            fetch('/analyze_lexical', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('lexicalResult').textContent = data.lexical_result;
+            });
+        }
+        
+        function analyzeSyntactic() {
+            const code = document.getElementById('codeInput').value;
+            fetch('/analyze_syntactic', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({ code: code })
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('syntacticResult').textContent = data.syntactic_result;
+            });
+        }
+    </script>
+</body>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background-color: #f0f0f0;
+        margin: 0;
+        padding: 0;
+    }
+
+    .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #dda42a;
+        color: rgb(0, 0, 0);
+        border-radius: 10px;
+    }
+
+    h1 {
+        text-align: center;
+    }
+
+    .editor textarea {
+        width: 100%;
+        border-radius: 5px;
+        padding: 10px;
+    }
+
+    .buttons {
+        display: flex;
+        justify-content: space-around;
+        margin: 20px 0;
+    }
+
+    .results {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .results div {
+        width: 45%;
+    }
+
+</style>
+</html>
